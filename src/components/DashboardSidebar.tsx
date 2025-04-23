@@ -6,9 +6,9 @@ import { Home, BookOpen, Tag, User, LogOut } from "lucide-react";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
-  { name: "Blogs", href: "/dashboard", icon: BookOpen },
+  { name: "Blogs", href: "/dashboard/blog", icon: BookOpen },
   { name: "Categories", href: "/dashboard/categories", icon: Tag },
-  { name: "Profile", href: "/dashboard/profile", icon: User },
+  // { name: "Profile", href: "/dashboard/profile", icon: User },
 ];
 
 export default function DashboardSidebar() {
