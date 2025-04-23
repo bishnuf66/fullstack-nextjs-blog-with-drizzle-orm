@@ -1,3 +1,5 @@
+import api from './api'; 
+
 interface CategoryCreatePayload {
   name: string;
 }
@@ -9,13 +11,10 @@ interface CategoryUpdatePayload {
 // Fetch all categories
 export const fetchCategories = async () => {
   try {
-    const response = await fetch('/api/categories');
-    if (!response.ok) {
-      throw new Error('Failed to fetch categories');
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching categories:", error);
+    const response = await api.get('/api/categories');
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching categories:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -23,21 +22,10 @@ export const fetchCategories = async () => {
 // Create a new category
 export const createCategory = async (categoryData: CategoryCreatePayload) => {
   try {
-    const response = await fetch('/api/categories', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(categoryData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to create category');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error creating category:", error);
+    const response = await api.post('/api/categories', categoryData);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error creating category:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -45,21 +33,10 @@ export const createCategory = async (categoryData: CategoryCreatePayload) => {
 // Update a category
 export const updateCategory = async (categoryId: number, updatedFields: CategoryUpdatePayload) => {
   try {
-    const response = await fetch(`/api/categories/${categoryId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedFields),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update category');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error updating category:", error);
+    const response = await api.put(`/api/categories/${categoryId}`, updatedFields);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error updating category:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -67,17 +44,10 @@ export const updateCategory = async (categoryId: number, updatedFields: Category
 // Delete a category
 export const deleteCategory = async (categoryId: number) => {
   try {
-    const response = await fetch(`/api/categories/${categoryId}`, {
-      method: 'DELETE',
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to delete category');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error deleting category:", error);
+    const response = await api.delete(`/api/categories/${categoryId}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error deleting category:", error.response?.data || error.message);
     throw error;
   }
-}; 
+};

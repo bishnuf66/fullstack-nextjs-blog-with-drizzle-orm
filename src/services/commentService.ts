@@ -1,3 +1,5 @@
+import api from './api';
+
 interface CommentCreatePayload {
   name: string;
   email: string;
@@ -14,13 +16,12 @@ interface CommentUpdatePayload {
 // Fetch comments for a blog
 export const fetchComments = async (blogId: number) => {
   try {
-    const response = await fetch(`/api/comments?blogId=${blogId}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch comments');
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching comments:", error);
+    const response = await api.get(`/api/comments`, {
+      params: { blogId }
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error("Error fetching comments:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -28,21 +29,10 @@ export const fetchComments = async (blogId: number) => {
 // Create a new comment
 export const createComment = async (commentData: CommentCreatePayload) => {
   try {
-    const response = await fetch('/api/comments', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(commentData),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to create comment');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error creating comment:", error);
+    const response = await api.post('/api/comments', commentData);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error creating comment:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -50,21 +40,10 @@ export const createComment = async (commentData: CommentCreatePayload) => {
 // Update a comment
 export const updateComment = async (commentId: number, updatedFields: CommentUpdatePayload) => {
   try {
-    const response = await fetch(`/api/comments/${commentId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedFields),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to update comment');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error updating comment:", error);
+    const response = await api.put(`/api/comments/${commentId}`, updatedFields);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error updating comment:", error.response?.data || error.message);
     throw error;
   }
 };
@@ -72,17 +51,10 @@ export const updateComment = async (commentId: number, updatedFields: CommentUpd
 // Delete a comment
 export const deleteComment = async (commentId: number) => {
   try {
-    const response = await fetch(`/api/comments/${commentId}`, {
-      method: 'DELETE',
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to delete comment');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("Error deleting comment:", error);
+    const response = await api.delete(`/api/comments/${commentId}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error deleting comment:", error.response?.data || error.message);
     throw error;
   }
-}; 
+};

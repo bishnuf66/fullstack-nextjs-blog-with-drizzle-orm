@@ -1,59 +1,31 @@
-import { db } from '../db';
-import { User } from '../db/schema';
-import { eq } from 'drizzle-orm';
-import bcrypt from 'bcryptjs';
+import api from './api'; 
 
 const SECRET_KEY = "blogMaster"; 
+
 interface UserData {
   name: string;
   email: string;
   password: string;
 }
 
-// Register function
+// Register function using Axios
 export const register = async (name: string, email: string, password: string) => {
   try {
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.message || 'Registration failed');
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Registration error:', error);
+    const response = await api.post('/api/auth/register', { name, email, password });
+    return response.data; // Axios automatically returns the response data
+  } catch (error: any) {
+    console.error('Registration error:', error.response?.data || error.message);
     throw error;
   }
 };
 
-// Login function
+// Login function using Axios
 export const login = async (email: string, password: string) => {
   try {
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.message || 'Login failed');
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Login error:', error);
+    const response = await api.post('/api/auth/login', { email, password });
+    return response.data; // Axios automatically returns the response data
+  } catch (error: any) {
+    console.error('Login error:', error.response?.data || error.message);
     throw error;
   }
 };
