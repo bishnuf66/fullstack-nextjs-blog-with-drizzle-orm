@@ -13,6 +13,11 @@ interface Blog {
   description: string;
   image: string;
   date: string;
+  categoryId?: number;
+  category?: {
+    id: number;
+    name: string;
+  };
 }
 
 const BlogDashboard: React.FC = () => {
@@ -56,7 +61,7 @@ const BlogDashboard: React.FC = () => {
     );
   }, [blogs, searchTerm]);
   const handleDelete = async (id: number) => {
-    setBlogToDelete(id);
+    setBlogToDelete(Number(id));
     setIsDeleteModalOpen(true);
   };
 

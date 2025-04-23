@@ -50,7 +50,7 @@ const LoginForm: React.FC = () => {
         setCookie("name", data.user.name);
         setCookie("id", data.user.id);
         toast.success("Login successful!");
-        router.push("/blogs");
+        router.push("/dashboard");
       }
     } catch (error: any) {
       console.log(error);

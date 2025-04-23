@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { fetchBlogs, fetchBlogsById } from "../services/blogService";
+import { fetchBlogsById } from "../services/blogService";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -14,10 +14,10 @@ interface Blog {
 }
 
 interface SingleBlogProps {
-  blogId: string;
+  id: string;
 }
 
-const SingleBlog: React.FC<SingleBlogProps> = ({ blogId }) => {
+const SingleBlog: React.FC<SingleBlogProps> = ({ id }) => {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
@@ -25,8 +25,8 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ blogId }) => {
   useEffect(() => {
     const loadBlog = async () => {
       try {
-        const blog = await fetchBlogsById(blogId);
-        setBlog(blog[0]);
+        const blog = await fetchBlogsById(id);
+        setBlog(blog);
       } catch (error) {
         console.error("Error loading blog", error);
       } finally {
@@ -35,7 +35,7 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ blogId }) => {
     };
 
     loadBlog();
-  }, [blogId]);
+  }, [id]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

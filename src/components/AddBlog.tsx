@@ -1,15 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { createBlog, updateBlog } from "../services/blogService"; // Added updateBlog
+import { createBlog, updateBlog } from "../services/blogService";
+import { fetchCategories } from "../services/categoryService";
 import { X, FileText } from "lucide-react";
 import toast from "react-hot-toast";
 import { getCookie } from "@/utils/cookieutil";
+import { Category } from "@/types/category";
 
 interface BlogData {
-  id?: number; // Changed from string to number to match service
+  id?: number;
   title: string;
   description: string;
   image: string;
   date?: string;
+  categoryId?: number;
 }
 
 interface AddBlogProps {
@@ -30,10 +33,32 @@ const AddBlog: React.FC<AddBlogProps> = ({
     description: "",
     image: "",
     date: "",
+    categoryId: undefined,
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true);
+
+  // Fetch categories when component mounts
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Error loading categories:", error);
+        toast.error("Failed to load categories");
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    if (isOpen) {
+      loadCategories();
+    }
+  }, [isOpen]);
 
   // Reset form when modal opens/closes or initialData changes
   const resetForm = useCallback(() => {
@@ -42,6 +67,7 @@ const AddBlog: React.FC<AddBlogProps> = ({
       description: initialData?.description || "",
       image: initialData?.image || "",
       date: initialData?.date || "",
+      categoryId: initialData?.categoryId,
     });
     setImageFile(null);
     setImagePreview(initialData?.image || null);
@@ -66,7 +92,9 @@ const AddBlog: React.FC<AddBlogProps> = ({
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -96,7 +124,7 @@ const AddBlog: React.FC<AddBlogProps> = ({
 
       const payload = {
         ...formData,
-        userId: getCookie("id"),
+        userId: Number(getCookie("id")),
         image: finalimage,
       };
 
@@ -184,6 +212,27 @@ const AddBlog: React.FC<AddBlogProps> = ({
               rows={4}
               disabled={isSubmitting}
             />
+          </div>
+
+          {/* Category */}
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Category
+            </label>
+            <select
+              name="categoryId"
+              value={formData.categoryId || ""}
+              onChange={handleInputChange}
+              className="block w-full px-3 py-2 text-gray-600 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              disabled={isSubmitting || isLoadingCategories}
+            >
+              <option value="">Select a category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Date */}

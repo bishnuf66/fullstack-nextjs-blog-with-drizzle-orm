@@ -4,7 +4,6 @@ interface BlogCreatePayload {
   title: string;
   description: string;
   image: string; // base64 encoded image
-  imageType: string; // MIME type of the image
   userId: number;
   categoryId?: number;
 }
@@ -13,7 +12,6 @@ interface BlogUpdatePayload {
   title?: string;
   description?: string;
   image?: string;
-  imageType?: string;
   categoryId?: number;
 }
 
@@ -51,9 +49,9 @@ export const createBlog = async (blogData: BlogCreatePayload) => {
 };
 
 // Update a blog
-export const updateBlog = async (blogId: number, updatedFields: BlogUpdatePayload) => {
+export const updateBlog = async (id: number, updatedFields: BlogUpdatePayload) => {
   try {
-    const response = await api.put(`/api/blogs/${blogId}`, updatedFields); // Use Axios .put() instead of fetch
+    const response = await api.put(`/api/blogs/${id}`, updatedFields); // Use Axios .put() instead of fetch
     return response.data; // Axios automatically returns the data in response
   } catch (error: any) {
     console.error("Error updating blog:", error.response?.data || error.message);
@@ -62,9 +60,9 @@ export const updateBlog = async (blogId: number, updatedFields: BlogUpdatePayloa
 };
 
 // Delete a blog
-export const deleteBlog = async (blogId: number) => {
+export const deleteBlog = async (id: number) => {
   try {
-    const response = await api.delete(`/api/blogs/${blogId}`); // Use Axios .delete() instead of fetch
+    const response = await api.delete(`/api/blogs/${id}`); // Use Axios .delete() instead of fetch
     return response.data; // Axios automatically returns the data in response
   } catch (error: any) {
     console.error("Error deleting blog:", error.response?.data || error.message);

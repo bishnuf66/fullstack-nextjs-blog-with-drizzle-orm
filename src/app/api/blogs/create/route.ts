@@ -4,13 +4,13 @@ import { Blog } from '@/db/schema';
 
 export async function POST(request: Request) {
   try {
-    const { title, description, image, imageType, userId } = await request.json();
+    const { title, description, image, userId, categoryId } = await request.json();
     const newBlog = await db.insert(Blog).values({
       title,
       description,
       image,
-      imageType,
       userId,
+      categoryId,
       date: new Date(),
     }).returning();
 

@@ -10,9 +10,9 @@ export async function PUT(
 ) {
   try {
     const { title, description, image, imageType } = await request.json();
-    const blogId = parseInt(params.id, 10);
+    const id = parseInt(params.id, 10);
 
-    if (isNaN(blogId)) {
+    if (isNaN(id)) {
       return NextResponse.json({ message: "Invalid blog ID" }, { status: 400 });
     }
 
@@ -23,7 +23,7 @@ export async function PUT(
         ...(image && { image }),
         ...(imageType && { imageType }),
       })
-      .where(eq(Blog.id, blogId))
+      .where(eq(Blog.id, id))
       .returning();
 
     if (updatedBlog.length === 0) {
@@ -49,14 +49,14 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const blogId = parseInt(params.id, 10);
+    const id = parseInt(params.id, 10);
 
-    if (isNaN(blogId)) {
+    if (isNaN(id)) {
       return NextResponse.json({ message: "Invalid blog ID" }, { status: 400 });
     }
 
     const deletedBlog = await db.delete(Blog)
-      .where(eq(Blog.id, blogId))
+      .where(eq(Blog.id, id))
       .returning();
 
     if (deletedBlog.length === 0) {
@@ -82,13 +82,13 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const blogId = parseInt(params.id, 10);
+    const id = parseInt(params.id, 10);
 
-    if (isNaN(blogId)) {
+    if (isNaN(id)) {
       return NextResponse.json({ message: "Invalid blog ID" }, { status: 400 });
     }
 
-    const blog = await db.select().from(Blog).where(eq(Blog.id, blogId));
+    const blog = await db.select().from(Blog).where(eq(Blog.id, id));
     if (blog.length === 0) {
       return NextResponse.json({ message: "Blog not found" }, { status: 404 });
     }
