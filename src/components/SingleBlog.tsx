@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { fetchBlogs } from "../services/blogService";
+import { fetchBlogs, fetchBlogsById } from "../services/blogService";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -9,7 +9,7 @@ interface Blog {
   id: number;
   title: string;
   description: string;
-  imageUrl: string;
+  image: string;
   date: string;
 }
 
@@ -23,11 +23,10 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ blogId }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const loadBlog = () => {
+    const loadBlog = async () => {
       try {
-        const blogs = fetchBlogs();
-        const foundBlog = blogs.find((b: Blog) => b.id === parseInt(blogId));
-        setBlog(foundBlog || null);
+        const blog = await fetchBlogsById(blogId);
+        setBlog(blog[0]);
       } catch (error) {
         console.error("Error loading blog", error);
       } finally {
@@ -103,10 +102,10 @@ const SingleBlog: React.FC<SingleBlogProps> = ({ blogId }) => {
       {/* Blog Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          {blog.imageUrl && (
+          {blog.image && (
             <div className="h-[400px] overflow-hidden">
               <img
-                src={blog.imageUrl}
+                src={blog.image}
                 alt={blog.title}
                 className="w-full h-full object-cover"
               />

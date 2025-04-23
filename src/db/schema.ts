@@ -10,7 +10,6 @@ export const User = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-
 export const Category = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: varchar("name").notNull(),
@@ -26,7 +25,6 @@ export const Blog = pgTable("blogs", {
   title: varchar("title").notNull(),
   description: text("description").notNull(),
   image: text("image").notNull(),
-  imageType: varchar("image_type").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull().$onUpdate(() => new Date()),
   date: timestamp("date").defaultNow().notNull(),

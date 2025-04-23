@@ -2,12 +2,13 @@ import React, { useEffect, useState, useCallback } from "react";
 import { createBlog, updateBlog } from "../services/blogService"; // Added updateBlog
 import { X, FileText } from "lucide-react";
 import toast from "react-hot-toast";
+import { getCookie } from "@/utils/cookieutil";
 
 interface BlogData {
   id?: number; // Changed from string to number to match service
   title: string;
   description: string;
-  imageUrl: string;
+  image: string;
   date?: string;
 }
 
@@ -27,7 +28,7 @@ const AddBlog: React.FC<AddBlogProps> = ({
   const [formData, setFormData] = useState<Omit<BlogData, "id">>({
     title: "",
     description: "",
-    imageUrl: "",
+    image: "",
     date: "",
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -39,11 +40,11 @@ const AddBlog: React.FC<AddBlogProps> = ({
     setFormData({
       title: initialData?.title || "",
       description: initialData?.description || "",
-      imageUrl: initialData?.imageUrl || "",
+      image: initialData?.image || "",
       date: initialData?.date || "",
     });
     setImageFile(null);
-    setImagePreview(initialData?.imageUrl || null);
+    setImagePreview(initialData?.image || null);
   }, [initialData]);
 
   useEffect(() => {
@@ -83,19 +84,20 @@ const AddBlog: React.FC<AddBlogProps> = ({
 
     try {
       // Get the final image URL (either new upload or existing)
-      let finalImageUrl = formData.imageUrl;
+      let finalimage = formData.image;
       if (imageFile) {
-        finalImageUrl = await convertImageToBase64(imageFile);
+        finalimage = await convertImageToBase64(imageFile);
       }
 
-      if (!finalImageUrl) {
+      if (!finalimage) {
         toast.error("Blog image is required");
         return;
       }
 
       const payload = {
         ...formData,
-        imageUrl: finalImageUrl,
+        userId: getCookie("id"),
+        image: finalimage,
       };
 
       if (initialData?.id) {

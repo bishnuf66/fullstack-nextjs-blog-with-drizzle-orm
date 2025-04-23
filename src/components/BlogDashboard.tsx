@@ -11,10 +11,9 @@ interface Blog {
   id: number;
   title: string;
   description: string;
-  imageUrl: string;
+  image: string;
   date: string;
 }
-
 
 const BlogDashboard: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -194,10 +193,10 @@ const BlogDashboard: React.FC = () => {
                 key={blog.id}
                 className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
               >
-                {blog.imageUrl && (
+                {blog.image && (
                   <div className="h-48 overflow-hidden">
                     <img
-                      src={blog.imageUrl}
+                      src={blog.image}
                       alt={blog.title}
                       className="w-full h-full object-cover"
                       loading="lazy"

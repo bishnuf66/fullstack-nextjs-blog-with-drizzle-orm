@@ -64,3 +64,22 @@ export async function DELETE(
     );
   }
 } 
+
+
+
+export async function GET(
+  req: Request,
+  context: { params: { id: string } }
+) {
+  try {
+    const blogId = parseInt(context.params.id);
+    const blog = await db.select().from(Blog).where(eq(Blog.id, blogId))
+    if (!blog) {
+      return NextResponse.json({ message: "Blog not found" }, { status: 404 });
+    }
+    return NextResponse.json(blog);
+  } catch (error) {
+    console.error('Error fetching blog:', error);
+    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+  }
+}

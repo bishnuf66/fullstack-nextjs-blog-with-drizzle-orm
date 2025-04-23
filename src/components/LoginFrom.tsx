@@ -48,6 +48,7 @@ const LoginForm: React.FC = () => {
       if (data.success === true) {
         setCookie("email", data.user.email);
         setCookie("name", data.user.name);
+        setCookie("id", data.user.id);
         toast.success("Login successful!");
         router.push("/blogs");
       }

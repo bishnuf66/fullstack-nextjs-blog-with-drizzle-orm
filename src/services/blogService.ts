@@ -4,6 +4,7 @@ interface BlogCreatePayload {
   image: string; // base64 encoded image
   imageType: string; // MIME type of the image
   userId: number;
+  categoryId?: number;
 }
 
 interface BlogUpdatePayload {
@@ -11,8 +12,22 @@ interface BlogUpdatePayload {
   description?: string;
   image?: string;
   imageType?: string;
+  categoryId?: number;
 }
 
+
+export const fetchBlogsById = async (id: number) => {
+  try {
+    const response = await fetch(`/api/blogs/${id}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch blogs');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    throw error;
+  }
+};
 // Fetch all blogs
 export const fetchBlogs = async () => {
   try {

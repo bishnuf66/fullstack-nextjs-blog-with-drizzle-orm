@@ -9,7 +9,7 @@ interface Blog {
   id: number; // Using number for blog ID as it is generated with Date.now()
   title: string;
   description: string;
-  imageUrl: string; // Base64 string for image
+  image: string; // Base64 string for image
   date: string;
 }
 
@@ -128,10 +128,10 @@ const BlogList: React.FC = () => {
                 className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden group cursor-pointer"
                 onClick={() => router.push(`/blogs/${blog.id}`)}
               >
-                {blog.imageUrl && (
+                {blog.image && (
                   <div className="h-56 overflow-hidden">
                     <img
-                      src={blog.imageUrl}
+                      src={blog.image}
                       alt={blog.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
