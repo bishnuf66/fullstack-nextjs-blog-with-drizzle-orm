@@ -15,6 +15,7 @@ interface Blog {
   date: string;
 }
 
+
 const BlogDashboard: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -25,21 +26,13 @@ const BlogDashboard: React.FC = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [blogToDelete, setBlogToDelete] = useState<number | null>(null);
 
-  // Memoized filtered blogs
-  const filteredBlogs = useMemo(() => {
-    return blogs.filter(
-      (blog) =>
-        blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        blog.description.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [blogs, searchTerm]);
-
   // Load blogs with  async/await to mimic API call
   const loadBlogs = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const blogs = await fetchBlogs(); 
+      const blogs = await fetchBlogs();
+
       setBlogs(blogs);
     } catch (err) {
       console.error("Error loading blogs", err);
@@ -54,6 +47,15 @@ const BlogDashboard: React.FC = () => {
     loadBlogs();
   }, [loadBlogs]);
 
+  console.log("Blogs loaded:", blogs); // Debugging line
+  // Memoized filtered blogs
+  const filteredBlogs = useMemo(() => {
+    return blogs.filter(
+      (blog) =>
+        blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        blog.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [blogs, searchTerm]);
   const handleDelete = async (id: number) => {
     setBlogToDelete(id);
     setIsDeleteModalOpen(true);

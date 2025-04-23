@@ -22,5 +22,5 @@ export function middleware(request: NextRequest) {
 
 // Define matcher to apply middleware only to specific routes
 export const config = {
-    matcher: ['/dashboard', '/blogs', '/blogs/:id*'], // Match dashboard, blogs, and blog post pages
+    matcher: ['/dashboard'], // Match dashboard, blogs, and blog post pages
   };

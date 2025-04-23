@@ -21,9 +21,9 @@ const BlogList: React.FC = () => {
 
   // Fetch blogs from localStorage using fetchBlogs function
   useEffect(() => {
-    const loadBlogs = () => {
+    const loadBlogs = async () => {
       try {
-        const blogs = fetchBlogs(); 
+        const blogs = await fetchBlogs(); // await here
         setBlogs(blogs);
       } catch (error) {
         console.error("Error loading blogs", error);

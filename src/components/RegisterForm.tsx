@@ -10,7 +10,7 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onClose }) => {
-  const [userName, setUserName] = useState<string>("");
+  const [name, setname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
@@ -25,7 +25,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onClose }) => {
 
     try {
       setLoading(true);
-      const data = await register(userName, email, password);
+      const data = await register(name, email, password);
 
       if (data.success === false) {
         toast.error(data.message);
@@ -62,14 +62,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onClose }) => {
           {/* User Name Input with Icon */}
           <div className="relative">
             <input
-              id="userName"
-              name="userName"
+              id="name"
+              name="name"
               type="text"
               required
               className="appearance-none rounded-none relative block w-full px-10 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-1 sm:text-sm"
               placeholder="User Name"
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              value={name}
+              onChange={(e) => setname(e.target.value)}
             />
             <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
               <User className="h-5 w-5 text-gray-500" />

@@ -21,14 +21,12 @@ export async function POST(request: Request) {
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
-    
     if (!isValidPassword) {
       return NextResponse.json(
         { message: "Invalid email or password", success: false },
         { status: 401 }
       );
     }
-
     return NextResponse.json({
       message: "Login successful",
       success: true,

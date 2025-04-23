@@ -5,7 +5,6 @@ import { Blog } from '@/db/schema';
 export async function POST(request: Request) {
   try {
     const { title, description, image, imageType, userId } = await request.json();
-
     const newBlog = await db.insert(Blog).values({
       title,
       description,

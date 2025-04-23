@@ -47,7 +47,7 @@ const LoginForm: React.FC = () => {
       console.log(data), "forn login";
       if (data.success === true) {
         setCookie("email", data.user.email);
-        setCookie("userName", data.user.userName);
+        setCookie("name", data.user.name);
         toast.success("Login successful!");
         router.push("/blogs");
       }
